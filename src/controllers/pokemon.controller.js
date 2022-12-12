@@ -76,4 +76,24 @@ const patchPokemon = async (req, res, next) => {
     }
 };
 
-module.exports = { createPokemon, getPokemon, getPokedex, patchPokemon };
+const deletePokemon = async (req, res, next) => {
+    try {
+        const name = req.params.name;
+        const pokemon = await Pokemon.findOne({ name });
+        if (!pokemon || pokemon.length === 0 || pokemon === undefined) {
+            res.status(404).json({ message: 'Pokémon not found' });
+        }
+        next();
+    } catch (err) {
+        console.log(err, 'error CONTROLLER');
+        res.status(500).json({ message: 'Une erreur est survenue' });
+    }
+};
+
+module.exports = {
+    createPokemon,
+    getPokemon,
+    getPokedex,
+    patchPokemon,
+    deletePokemon,
+};

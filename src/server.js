@@ -15,10 +15,10 @@ app.post('/create/pokemon', controller.createPokemon, dto.createPokemon);
 
 app.patch('/edit/pokemon/:name', controller.patchPokemon, dto.patchPokemon);
 
-// app.delete(
-//     '/delete/pokemon/:pokemonName',
-//     controller.deletePokemon,
-//     dto.deletePokemon
-// );
+app.delete(
+    '/delete/pokemon/:name',
+    controller.deletePokemon,
+    dto.deletePokemon
+);
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));

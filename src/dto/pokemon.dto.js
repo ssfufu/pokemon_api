@@ -54,4 +54,22 @@ const patchPokemon = async (req, res) => {
     }
 };
 
-module.exports = { createPokemon, getPokemon, getPokedex, patchPokemon };
+const deletePokemon = async (req, res) => {
+    try {
+        const name = req.params.name;
+        const pokemon = await Pokemon.findOne({ name });
+        await pokemon.remove();
+        res.status(200).json({ message: 'Pokémon deleted' });
+    } catch (err) {
+        console.log(err, 'error DTO');
+        res.status(500).json({ message: 'Une erreur est survenue' });
+    }
+};
+
+module.exports = {
+    createPokemon,
+    getPokemon,
+    getPokedex,
+    patchPokemon,
+    deletePokemon,
+};
