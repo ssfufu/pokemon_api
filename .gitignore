@@ -104,4 +104,4 @@ dist
 .tern-port
 
 # database login credentials
-src/database/
+src/database/index.js
