@@ -5,13 +5,16 @@ const createPokemon = async (req, res, next) => {
         const body = [name, attaque, defense, type];
         if (!name || !attaque || !defense || !type) {
             res.status(404).json({ message: 'Content is required' });
+            return;
         }
         body.forEach((content) => {
             if (content.length > 20) {
-                res.status.json({ message: 'Content too long' });
+                res.status(401).json({ message: 'Content too long' });
+                return;
             }
             if (content === undefined) {
                 res.status(404).json({ message: 'Content is required' });
+                return;
             }
         });
         next();
@@ -27,6 +30,7 @@ const getPokemon = async (req, res, next) => {
         const pokemon = await Pokemon.findOne({ name });
         if (!pokemon || pokemon.length === 0 || pokemon === undefined) {
             res.status(404).json({ message: 'Pokémon not found' });
+            return;
         }
         next();
     } catch (err) {
@@ -40,6 +44,7 @@ const getPokedex = async (res, req, next) => {
         const pokedex = await Pokemon.find();
         if (!pokedex || pokedex.length === 0 || pokedex === undefined) {
             res.status(404).json({ message: 'Pokedex not found' });
+            return;
         }
         next();
     } catch (err) {
@@ -56,19 +61,26 @@ const patchPokemon = async (req, res, next) => {
         const pokemon = await Pokemon.findOne({ name });
         if (!pokemon || pokemon.length === 0 || pokemon === undefined) {
             res.status(404).json({ message: 'Pokémon not found' });
+            return;
         }
         newThings.forEach((content) => {
-            if (content.length > 20)
-                res.status.json({ message: 'Content too long' });
-            if (content === undefined)
+            if (content.length > 20) {
+                res.status(401).json({ message: 'Content too long' });
+                return;
+            }
+            if (content === undefined) {
                 res.status(404).json({ message: 'Content is required' });
+                return;
+            }
         });
-        if (newAttaque === pokemon.attaque)
+        if (
+            newAttaque === pokemon.attaque ||
+            newDefense === pokemon.defense ||
+            newName === pokemon.name
+        ) {
             res.status(404).json({ message: 'New is required' });
-        if (newDefense === pokemon.defense)
-            res.status(404).json({ message: 'New is required' });
-        if (newName === pokemon.name)
-            res.status(404).json({ message: 'New is required' });
+            return;
+        }
         next();
     } catch (err) {
         console.log(err, 'error CONTROLLER');
@@ -80,8 +92,22 @@ const deletePokemon = async (req, res, next) => {
     try {
         const name = req.params.name;
         const pokemon = await Pokemon.findOne({ name });
-        if (!pokemon || pokemon.length === 0 || pokemon === undefined) {
+        if (
+            !pokemon ||
+            pokemon.length === 0 ||
+            !name ||
+            name.length === 0 ||
+            name === undefined ||
+            name === null ||
+            name === '' ||
+            name === ' ' ||
+            pokemon === null ||
+            pokemon === '' ||
+            pokemon === ' ' ||
+            pokemon === undefined
+        ) {
             res.status(404).json({ message: 'Pokémon not found' });
+            return;
         }
         next();
     } catch (err) {
