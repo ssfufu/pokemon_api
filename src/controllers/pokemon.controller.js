@@ -4,20 +4,24 @@ const createPokemon = async (req, res, next) => {
         const { name, attaque, defense, type } = req.body;
         const body = [name, attaque, defense, type];
         if (!name || !attaque || !defense || !type) {
-            res.status(404).json({ message: 'Content is required' });
+            await res.status(404).json({ message: 'Content is required' });
+            return;
         }
-        body.forEach((content) => {
+        body.forEach(async (content) => {
             if (content.length > 20) {
-                res.status.json({ message: 'Content too long' });
+                await res.status(401).json({ message: 'Content too long' });
+                return;
             }
             if (content === undefined) {
-                res.status(404).json({ message: 'Content is required' });
+                await res.status(401).json({ message: 'Content is required' });
+                return;
             }
         });
         next();
     } catch {
         console.log(err, 'error CONTROLLER');
-        res.status(500).json({ message: 'Une erreur est survenue' });
+        await res.status(500).json({ message: 'Une erreur est survenue' });
+        return;
     }
 };
 
@@ -26,25 +30,25 @@ const getPokemon = async (req, res, next) => {
         const name = req.params.name;
         const pokemon = await Pokemon.findOne({ name });
         if (!pokemon || pokemon.length === 0 || pokemon === undefined) {
-            res.status(404).json({ message: 'Pokémon not found' });
+            await res.status(404).json({ message: 'Pokémon not found' });
+            return;
         }
         next();
     } catch (err) {
         console.log(err, 'error CONTROLLER');
-        res.status(500).json({ message: 'Une erreur est survenue' });
+        await res.status(500).json({ message: 'Une erreur est survenue' });
+        return;
     }
 };
 
 const getPokedex = async (res, req, next) => {
     try {
         const pokedex = await Pokemon.find();
-        if (!pokedex || pokedex.length === 0 || pokedex === undefined) {
-            res.status(404).json({ message: 'Pokedex not found' });
-        }
         next();
     } catch (err) {
         console.log(err, 'error CONTROLLER');
-        res.status(500).json({ message: 'Une erreur est survenue' });
+        await res.status(500).json({ message: 'Une erreur est survenue' });
+        return;
     }
 };
 
@@ -55,24 +59,35 @@ const patchPokemon = async (req, res, next) => {
         const newThings = [newName, newAttaque, newDefense];
         const pokemon = await Pokemon.findOne({ name });
         if (!pokemon || pokemon.length === 0 || pokemon === undefined) {
-            res.status(404).json({ message: 'Pokémon not found' });
+            await res.status(404).json({ message: 'Pokémon not found' });
         }
-        newThings.forEach((content) => {
-            if (content.length > 20)
-                res.status.json({ message: 'Content too long' });
-            if (content === undefined)
-                res.status(404).json({ message: 'Content is required' });
+        newThings.forEach(async (content) => {
+            if (content.length > 20) {
+                await res.status(401).json({ message: 'Content too long' });
+                return;
+            }
+            if (content === undefined) {
+                await res.status(404).json({ message: 'Content is required' });
+                return;
+            }
         });
-        if (newAttaque === pokemon.attaque)
-            res.status(404).json({ message: 'New is required' });
-        if (newDefense === pokemon.defense)
-            res.status(404).json({ message: 'New is required' });
-        if (newName === pokemon.name)
-            res.status(404).json({ message: 'New is required' });
+        if (newAttaque === pokemon.attaque) {
+            await res.status(404).json({ message: 'New is required' });
+            return;
+        }
+        if (newDefense === pokemon.defense) {
+            await res.status(404).json({ message: 'New is required' });
+            return;
+        }
+        if (newName === pokemon.name) {
+            await res.status(404).json({ message: 'New is required' });
+            return;
+        }
         next();
     } catch (err) {
         console.log(err, 'error CONTROLLER');
-        res.status(500).json({ message: 'Une erreur est survenue' });
+        await res.status(500).json({ message: 'Une erreur est survenue' });
+        return;
     }
 };
 
@@ -81,12 +96,14 @@ const deletePokemon = async (req, res, next) => {
         const name = req.params.name;
         const pokemon = await Pokemon.findOne({ name });
         if (!pokemon || pokemon.length === 0 || pokemon === undefined) {
-            res.status(404).json({ message: 'Pokémon not found' });
+            await res.status(404).json({ message: 'Pokémon not found' });
+            return;
         }
         next();
     } catch (err) {
         console.log(err, 'error CONTROLLER');
-        res.status(500).json({ message: 'Une erreur est survenue' });
+        await res.status(500).json({ message: 'Une erreur est survenue' });
+        return;
     }
 };
 

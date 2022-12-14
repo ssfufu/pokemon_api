@@ -2,18 +2,21 @@ const Pokemon = require('../models/pokemonSchema');
 
 const createPokemon = async (req, res) => {
     try {
-        const { name, attaque, defense, type } = req.body;
+        const { name, attaque, defense, type, sprites, api_id } = req.body;
         const pokemon = new Pokemon({
             name,
             attaque,
             defense,
             type,
+            sprites,
+            api_id,
         });
         await pokemon.save();
-        res.status(200).json({ message: 'Pokémon created' });
+        await res.status(200).json({ message: 'Pokémon created' });
     } catch (err) {
         console.log(err, 'error DTO');
-        res.status(500).json({ message: 'Une erreur est survenue' });
+        await res.status(500).json({ message: 'Une erreur est survenue' });
+        return;
     }
 };
 
@@ -21,20 +24,22 @@ const getPokemon = async (req, res) => {
     try {
         const name = req.params.name;
         const pokemon = await Pokemon.findOne({ name });
-        res.status(200).json(pokemon);
+        await res.status(200).json(pokemon);
     } catch (err) {
         console.log(err, 'error DTO');
-        res.status(500).json({ message: 'Une erreur est survenue' });
+        await res.status(500).json({ message: 'Une erreur est survenue' });
+        return;
     }
 };
 
 const getPokedex = async (req, res) => {
     try {
         const pokedex = await Pokemon.find();
-        res.status(200).json(pokedex);
+        await res.status(200).json(pokedex);
     } catch (err) {
         console.log(err, 'error DTO');
-        res.status(500).json({ message: 'Une erreur est survenue' });
+        await res.status(500).json({ message: 'Une erreur est survenue' });
+        return;
     }
 };
 
@@ -47,10 +52,11 @@ const patchPokemon = async (req, res) => {
         pokemon.defense = newDefense;
         pokemon.name = newName;
         await pokemon.save();
-        res.status(200).json({ message: 'Pokémon edited' });
+        await res.status(200).json({ message: 'Pokémon edited' });
     } catch (err) {
         console.log(err, 'error DTO');
-        res.status(500).json({ message: 'Une erreur est survenue' });
+        await res.status(500).json({ message: 'Une erreur est survenue' });
+        return;
     }
 };
 
@@ -59,10 +65,11 @@ const deletePokemon = async (req, res) => {
         const name = req.params.name;
         const pokemon = await Pokemon.findOne({ name });
         await pokemon.remove();
-        res.status(200).json({ message: 'Pokémon deleted' });
+        await res.status(200).json({ message: 'Pokémon deleted' });
     } catch (err) {
         console.log(err, 'error DTO');
-        res.status(500).json({ message: 'Une erreur est survenue' });
+        await res.status(500).json({ message: 'Une erreur est survenue' });
+        return;
     }
 };
 
