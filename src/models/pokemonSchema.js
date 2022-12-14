@@ -4,7 +4,7 @@ const schema = new Schema({
     name: String,
     attaque: Number,
     defense: Number,
-    type: String,
+    type: [String],
 });
 
 module.exports = model('Pokemon', schema, 'pokemon');
