@@ -2,7 +2,8 @@ const Pokemon = require('../models/pokemonSchema');
 
 const createPokemon = async (req, res) => {
     try {
-        const { name, attaque, defense, type, sprites, api_id } = req.body;
+        const { name, attaque, defense, type, sprites, api_id, poke_color } =
+            req.body;
         const pokemon = new Pokemon({
             name,
             attaque,
@@ -10,6 +11,7 @@ const createPokemon = async (req, res) => {
             type,
             sprites,
             api_id,
+            poke_color,
         });
         await pokemon.save();
         await res.status(200).json({ message: 'Pokémon created' });

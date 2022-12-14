@@ -41,9 +41,13 @@ const getPokemon = async (req, res, next) => {
     }
 };
 
-const getPokedex = async (res, req, next) => {
+const getPokedex = async (req, res, next) => {
     try {
         const pokedex = await Pokemon.find();
+        if (!pokedex || pokedex.length === 0 || pokedex === undefined) {
+            await res.status(404).json({ message: 'Pokedex not found' });
+            return;
+        }
         next();
     } catch (err) {
         console.log(err, 'error CONTROLLER');

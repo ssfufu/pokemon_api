@@ -8,6 +8,7 @@ const schema = new Schema({
     type: [Object],
     sprites: String,
     api_id: Number,
+    poke_color: String,
 });
 
 module.exports = model('Pokemon', schema, 'pokemon');
