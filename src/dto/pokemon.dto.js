@@ -2,13 +2,13 @@ const Pokemon = require('../models/pokemonSchema');
 
 const createPokemon = async (req, res) => {
     try {
-        const { name, attaque, defense, type, sprites, api_id, poke_color } =
+        const { name, attaque, defense, types, sprites, api_id, poke_color } =
             req.body;
         const pokemon = new Pokemon({
             name,
             attaque,
             defense,
-            type,
+            types,
             sprites,
             api_id,
             poke_color,

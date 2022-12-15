@@ -5,7 +5,7 @@ const schema = new Schema({
     name: String,
     attaque: Number,
     defense: Number,
-    type: [Object],
+    types: [Object],
     sprites: String,
     api_id: Number,
     poke_color: String,

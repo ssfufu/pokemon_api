@@ -1,9 +1,9 @@
 const Pokemon = require('../models/pokemonSchema');
 const createPokemon = async (req, res, next) => {
     try {
-        const { name, attaque, defense, type } = req.body;
-        const body = [name, attaque, defense, type];
-        if (!name || !attaque || !defense || !type) {
+        const { name, attaque, defense, types } = req.body;
+        const body = [name, attaque, defense, types];
+        if (!name || !attaque || !defense || !types) {
             await res.status(404).json({ message: 'Content is required' });
             return;
         }
@@ -45,7 +45,7 @@ const getPokedex = async (req, res, next) => {
     try {
         const pokedex = await Pokemon.find();
         if (!pokedex || pokedex.length === 0 || pokedex === undefined) {
-            await res.status(404).json({ message: 'Pokedex not found' });
+            await res.status(404).json({ message: 'Pokédex not found' });
             return;
         }
         next();
