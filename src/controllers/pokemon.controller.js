@@ -7,6 +7,11 @@ const createPokemon = async (req, res, next) => {
             await res.status(404).json({ message: 'Content is required' });
             return;
         }
+        const pokemon = await Pokemon.findOne({ name });
+        if (pokemon !== null) {
+            await res.status(404).json({ message: 'Pokémon already exist' });
+            return;
+        }
         body.forEach(async (content) => {
             if (content.length > 20) {
                 await res.status(401).json({ message: 'Content too long' });
