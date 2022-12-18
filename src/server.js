@@ -7,10 +7,16 @@ require('./database');
 const app = express();
 const port = 3030;
 require('dotenv').config();
+const cors = require('cors');
 
 const auth = require('./middlewares/auth');
 
 app.use(express.json());
+app.use(
+    cors({
+        origin: '*',
+    })
+);
 
 app.get(
     '/pokedex',
