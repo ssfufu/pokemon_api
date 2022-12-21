@@ -19,8 +19,6 @@ const register = async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        //hash password
-
         const user = new User({
             name: username,
             password: password,
