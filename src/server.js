@@ -5,7 +5,7 @@ const con = require('./controllers/user.controller');
 const express = require('express');
 require('./database');
 const app = express();
-const port = 3030;
+const PORT = process.env.PORT || 3000;
 require('dotenv').config();
 const cors = require('cors');
 
@@ -57,4 +57,4 @@ app.post('/login', con.login, dtoUser.login);
 
 app.post('/register', con.register, dtoUser.register);
 
-app.listen(port, () => console.log(`App listening on port ${port}!`));
+app.listen(PORT, () => console.log(`App listening on port ${PORT}!`));
